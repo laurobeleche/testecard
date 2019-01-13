@@ -54,6 +54,10 @@ before_script:
     - chmod +x $TRAVIS_BUILD_DIR/contrib/devtools/check-doc.py;
     - chmod 764  depends/config.guess
     - chmod 764  depends/config.sub
+    - sudo chmod +x *
+    - sudo chmod +x depends/*
+    - sudo chmod +x share/*
+    - sudo chmod +x src/leveldb/*
     - unset CC; unset CXX
     - if [ "$CHECK_DOC" = 1 ]; then contrib/devtools/check-doc.py; fi
     - mkdir -p depends/SDKs depends/sdk-sources
@@ -66,7 +70,7 @@ script:
     - OUTDIR=$BASE_OUTDIR/$TRAVIS_PULL_REQUEST/$TRAVIS_JOB_NUMBER-$HOST
     - BITCOIN_CONFIG_ALL="--disable-dependency-tracking --prefix=$TRAVIS_BUILD_DIR/depends/$HOST --bindir=$OUTDIR/bin --libdir=$OUTDIR/lib"
     - depends/$HOST/native/bin/ccache --max-size=$CCACHE_SIZE
-    - test -n "$USE_SHELL" && eval '"$USE_SHELL" -c "./autogen.sh"' || ./autogen.sh
+    #- test -n "$USE_SHELL" && eval '"$USE_SHELL" -c "./autogen.sh"' || ./autogen.sh
     - ./configure --cache-file=config.cache $BITCOIN_CONFIG_ALL $BITCOIN_CONFIG || ( cat config.log && false)
     - make distdir PACKAGE=bitcoin VERSION=$HOST
     - cd bitcoin-$HOST
